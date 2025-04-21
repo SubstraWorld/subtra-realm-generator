@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Choose Your Title | Substra.World</title>
+  <style>
+    body {
+      background-color: #0e0e0e;
+      color: #f0f0f0;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 40px;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .realm-display {
+      font-style: italic;
+      color: #a0c4ff;
+      margin: 20px auto;
+      font-size: 1.2em;
+      text-align: center;
+    }
+    .title-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 15px;
+      margin: 30px auto;
+      max-width: 800px;
+    }
+    .title-card {
+      background: #1e1e1e;
+      border: 2px solid transparent;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .title-card:hover, .title-card.selected {
+      border-color: #5c4d7d;
+      background-color: #2a2a2a;
+    }
+    .custom-input {
+      max-width: 400px;
+      margin: 30px auto;
+      text-align: center;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 1em;
+      margin-bottom: 8px;
+    }
+    .note {
+      color: #aaa;
+      font-size: 0.9em;
+    }
+    button {
+      display: block;
+      margin: 40px auto;
+      padding: 12px 30px;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 8px;
+      background-color: #5c4d7d;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Step 2: Choose Your Title</h1>
+  <div class="realm-display">
+    Your Realm: <span id="realmName"></span>
+  </div>
+
+  <h2>Select a Title</h2>
+  <div class="title-grid" id="titleGrid">
+    <!-- Titles will be injected here -->
+  </div>
+
+  <div class="custom-input">
+    <label for="customTitle">Or enter a custom title:</label><br>
+    <input type="text" id="customTitle" placeholder="e.g. Shadow Regent of the Hollow Wastes">
+    <div class="note">(+£2.50 for custom title)</div>
+  </div>
+
+  <button onclick="continueToCheckout()">Continue to Title Pack</button>
+
+  <script>
+    const titles = [
+      "Emperor", "Empress",
+      "King", "Queen",
+      "Pharaoh",
+      "Sultan", "Sultana",
+      "Rajah", "Rani",
+      "Khan", "Khatun",
+      "Oba",
+      "Emir", "Emira",
+      "Shogun",
+      "High Chief", "High Chieftain",
+      "Duke", "Duchess",
+      "Archduke", "Archduchess",
+      "Lord", "Lady"
+    ];
+
+    const titleGrid = document.getElementById("titleGrid");
+    const realmDisplay = document.getElementById("realmName");
+    let selectedTitle = "";
+
+    // Show realm name from localStorage
+    const savedRealm = localStorage.getItem("chosenRealm");
+    if (savedRealm) {
+      realmDisplay.innerText = savedRealm;
+    } else {
+      realmDisplay.innerText = "Unknown Realm";
+    }
+
+    // Create clickable title cards
+    titles.forEach(title => {
+      const card = document.createElement("div");
+      card.className = "title-card";
+      card.innerText = title;
+      card.onclick = () => {
+        document.querySelectorAll(".title-card").forEach(c => c.classList.remove("selected"));
+        card.classList.add("selected");
+        selectedTitle = title;
+        document.getElementById("customTitle").value = "";
+      };
+      titleGrid.appendChild(card);
+    });
+
+    // Auto-clear selection if user types custom title
+    document.getElementById("customTitle").addEventListener("input", () => {
+      document.querySelectorAll(".title-card").forEach(c => c.classList.remove("selected"));
+      selectedTitle = "";
+    });
+
+    function continueToCheckout() {
+      const custom = document.getElementById("customTitle").value.trim();
+      const finalTitle = custom ? custom : selectedTitle;
+
+      if (!finalTitle) {
+        alert("Please select or enter a title.");
+        return;
+      }
+
+      localStorage.setItem("chosenTitle", finalTitle);
+      window.location.href = "checkout-placeholder.html";
+    }
+  </script>
+</body>
+</html>
