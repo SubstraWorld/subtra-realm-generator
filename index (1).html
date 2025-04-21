@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Choose Your Realm | Substra.World</title>
+  <style>
+    body {
+      background-color: #0e0e0e;
+      color: #f0f0f0;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 40px;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      padding: 20px;
+      background: #111;
+      color: #f0f0f0;
+      border-radius: 12px;
+    }
+    h2 {
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 12px;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 12px;
+      border-radius: 6px;
+      border: none;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #5c4d7d;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+    #lore {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Subtura Realm Name Generator</h2>
+    <label for="city">Surface City/Town:</label>
+    <input id="city" type="text" placeholder="e.g. Edinburgh">
+
+    <label for="culture">Realm Culture:</label>
+    <select id="culture">
+      <option value="elder">Elder Deep</option>
+      <option value="fungal">Fungal Court</option>
+      <option value="crystal">Crystal Dominion</option>
+      <option value="ash">Ash & Ember</option>
+      <option value="echo">Echo-Folk</option>
+      <option value="aquatic">Abyssal Tides</option>
+      <option value="beast">Beastwarrens</option>
+      <option value="machine">Cogsunder</option>
+    </select>
+
+    <label for="environment">Environment Filter:</label>
+    <select id="environment">
+      <option value="default">Any</option>
+      <option value="volcanic">Volcanic</option>
+      <option value="crystalline">Crystalline</option>
+      <option value="organic">Fungal</option>
+      <option value="aquatic">Undersea</option>
+      <option value="mechanical">Mechanical</option>
+      <option value="feral">Primal</option>
+      <option value="spectral">Ghostly</option>
+    </select>
+
+    <label><input type="checkbox" id="veil"> Apply Veil (Mirrored Echo)</label><br>
+    <label><input type="checkbox" id="mutate"> Mutate City Name</label><br><br>
+
+    <button onclick="generateName()">Generate Name</button>
+    <div id="result"></div>
+    <div id="lore"></div>
+  </div>
+
+  <script>
+    const nameParts = {
+      elder: {
+        prefixes: ["Dun", "Khet", "Thar", "Vel"],
+        suffixes: ["hollow", "reach", "tarune", "spire"],
+        lores: [
+          "Ancient cities carved in stone, whispering forgotten oaths.",
+          "Arcane temples of lorebound stonewalkers.",
+          "Bastions of the first deepkin, predating surface empires."
+        ]
+      },
+      fungal: {
+        prefixes: ["Myco", "Spoor", "Vira", "Glim"],
+        suffixes: ["glen", "mire", "tharn", "pod"],
+        lores: [
+          "Sprawling undergroves alive with sentient fungi.",
+          "Bioluminescent realms ruled by spore-monarchs.",
+          "Living cities breathing spores and rebirth."
+        ]
+      },
+      crystal: {
+        prefixes: ["Vire", "Cryn", "Lum", "Sil"],
+        suffixes: ["vault", "glass", "dome", "mera"],
+        lores: [
+          "Prismatic kingdoms of light and silence.",
+          "Echoing chambers of memory locked in crystal.",
+          "Sanctuaries of reflection beneath shivering glass."
+        ]
+      },
+      ash: {
+        prefixes: ["Volk", "Draal", "Ember", "Scor"],
+        suffixes: ["deep", "forge", "slag", "mawr"],
+        lores: [
+          "Infernal cities shaped by fire and shadow.",
+          "Smoldering forges of the underclans.",
+          "Obsidian towers risen from eternal flame."
+        ]
+      },
+      echo: {
+        prefixes: ["Nether", "Whisper", "Hollow", "Noct"],
+        suffixes: ["shade", "rift", "bloom", "veil"],
+        lores: [
+          "Ghostly reflections of surface sins.",
+          "Realms between memory and dream.",
+          "Echo-chambers where time has no hold."
+        ]
+      },
+      aquatic: {
+        prefixes: ["Abyss", "Thal", "Murk", "Ner"],
+        suffixes: ["deep", "dren", "kelp", "gloom"],
+        lores: [
+          "Sunken halls of the drowned kings.",
+          "Tide-cities breathing in the abyss.",
+          "Moonlit ruins beneath silt and silence."
+        ]
+      },
+      beast: {
+        prefixes: ["Fang", "Grall", "Tharn", "Ur"],
+        suffixes: ["warrens", "claw", "gnash", "gorge"],
+        lores: [
+          "Den-cities of primal clans and howling rites.",
+          "Labyrinths ruled by beast-kin.",
+          "Territories where fang and fang alone reign."
+        ]
+      },
+      machine: {
+        prefixes: ["Cog", "Ferra", "Mech", "Tarn"],
+        suffixes: ["gear", "core", "maul", "vault"],
+        lores: [
+          "Clockwork sanctums of forgotten engineers.",
+          "Sovereignties of rust and reason.",
+          "Iron-bound cities of eternal revolution."
+        ]
+      }
+    };
+
+    function mutateName(name) {
+      const vowels = { a: "u", e: "o", i: "y", o: "a", u: "e" };
+      return name.toLowerCase().split("").map(char => vowels[char] || char).join("");
+    }
+
+    function veilName(name) {
+      return name.length > 4 ? name.slice(0, 3) + "'" + name.slice(-3) : "The Veiled " + name;
+    }
+
+    function capitalize(word) {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    }
+
+    function generateName() {
+      const city = document.getElementById("city").value.trim();
+      const culture = document.getElementById("culture").value;
+      const useVeil = document.getElementById("veil").checked;
+      const mutate = document.getElementById("mutate").checked;
+
+      if (!city) {
+        document.getElementById("result").innerText = "Please enter a surface city or town name.";
+        document.getElementById("lore").innerText = "";
+        return;
+      }
+
+      const style = nameParts[culture];
+      const prefix = style.prefixes[Math.floor(Math.random() * style.prefixes.length)];
+      const suffix = style.suffixes[Math.floor(Math.random() * style.suffixes.length)];
+      const lore = style.lores[Math.floor(Math.random() * style.lores.length)];
+
+      let base = city.toLowerCase();
+      if (mutate) base = mutateName(base);
+      if (useVeil) base = veilName(base);
+
+      const realmName = `${prefix} ${capitalize(base)} ${capitalize(suffix)}`;
+
+      document.getElementById("result").innerText = `Realm Name: ${realmName}`;
+      document.getElementById("lore").innerText = `Lore: ${lore}`;
+
+      // Save Realm name to localStorage for next step
+      localStorage.setItem("chosenRealm", realmName);
+    }
+  </script>
+</body>
+</html>
