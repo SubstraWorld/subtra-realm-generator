@@ -41,6 +41,7 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
+      margin-top: 12px;
     }
     #result {
       margin-top: 20px;
@@ -50,6 +51,9 @@
       margin-top: 10px;
       font-size: 14px;
       color: #ccc;
+    }
+    #nextButton {
+      display: none;
     }
   </style>
 </head>
@@ -89,6 +93,7 @@
     <button onclick="generateName()">Generate Name</button>
     <div id="result"></div>
     <div id="lore"></div>
+    <button id="nextButton" onclick="goToTitlePage()">Next: Choose Title</button>
   </div>
 
   <script>
@@ -205,9 +210,12 @@
 
       document.getElementById("result").innerText = `Realm Name: ${realmName}`;
       document.getElementById("lore").innerText = `Lore: ${lore}`;
-
-      // Save Realm name to localStorage for next step
       localStorage.setItem("chosenRealm", realmName);
+      document.getElementById("nextButton").style.display = "block";
+    }
+
+    function goToTitlePage() {
+      window.location.href = "title-picker.html";
     }
   </script>
 </body>
