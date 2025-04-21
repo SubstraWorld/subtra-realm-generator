@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Choose Your Realm | Substra.World</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #f5f5f5;
+      font-family: 'Georgia', serif;
+      text-align: center;
+      padding: 50px;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 1.2em;
+      margin-bottom: 40px;
+    }
+    button {
+      background-color: #5c4d7d;
+      border: none;
+      padding: 15px 30px;
+      color: white;
+      font-size: 1.2em;
+      cursor: pointer;
+      margin: 10px;
+      border-radius: 8px;
+    }
+    #realmDisplay {
+      font-size: 1.5em;
+      margin-top: 30px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <h1>Step 1: Choose Your Realm</h1>
+  <p>Summon your Realm from the mist...</p>
+  <button onclick="generateRealm()">Generate My Realm</button>
+  <div id="realmDisplay"></div>
+  <br>
+  <button onclick="goToNext()" id="nextButton" style="display:none;">Next</button>
+
+  <script>
+    const realms = [
+      "The Hollow Hills of Elarian",
+      "Stormreach Keep",
+      "The Obsidian Wastes",
+      "Velmora's Grove",
+      "The Celestial Veil",
+      "Duskwind Vale",
+      "Ironreach Dominion",
+      "The Sapphire Wilds",
+      "Ashenhold",
+      "Whisperfen Hollow"
+    ];
+
+    function generateRealm() {
+      const randomRealm = realms[Math.floor(Math.random() * realms.length)];
+      document.getElementById("realmDisplay").innerText = `"${randomRealm}"`;
+      localStorage.setItem("chosenRealm", randomRealm);
+      document.getElementById("nextButton").style.display = "inline-block";
+    }
+
+    function goToNext() {
+      window.location.href = "title-picker.html";
+    }
+  </script>
+</body>
+</html>
