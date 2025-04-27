@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Substra.World Certificate Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            padding: 20px;
+        }
+        .certificate-form {
+            background: white;
+            padding: 20px;
+            max-width: 400px;
+            margin: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .certificate-form input, .certificate-form button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        .certificate-form button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .certificate-form button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="certificate-form">
+        <h2>Get Your Certificate</h2>
+        <form id="certificateForm">
+            <input type="text" id="buyerName" placeholder="Enter your name" required>
+            <input type="text" id="buyerTitle" placeholder="Enter your title" required>
+            <button type="submit">Generate Certificate</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('certificateForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('buyerName').value;
+            const title = document.getElementById('buyerTitle').value;
+            console.log('Name:', name);
+            console.log('Title:', title);
+            // Next: Use this data to create a PDF
+        });
+    </script>
+
+</body>
+</html>
