@@ -56,6 +56,12 @@ CSS
 .cert-footer{display:flex;justify-content:space-between;align-items:flex-end;margin-top:24px;font-size:0.75rem;color:#6a5a3a}
 .cert-date{font-style:italic}
 .cert-sig{font-family:'Cinzel',serif;letter-spacing:2px}
+  @media print {
+  .form-panel { display: none; }
+  .preview-panel { padding: 0; background: white; }
+  .certificate { box-shadow: none; margin: 0 auto; }
+  body { background: white; }
+}
 </style>
 </head>
 <body>
