@@ -1,60 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Substra.World Certificate Generator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
-            padding: 20px;
-        }
-        .certificate-form {
-            background: white;
-            padding: 20px;
-            max-width: 400px;
-            margin: auto;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .certificate-form input, .certificate-form button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            font-size: 16px;
-        }
-        .certificate-form button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        .certificate-form button:hover {
-            background-color: #45a049;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Substra — Noble Title Certificate</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0f;color:#e8d5a3;font-family:'IM Fell English',serif;min-height:100vh}
+.page{display:grid;grid-template-columns:380px 1fr;min-height:100vh}
+.form-panel{background:#0f0f1a;border-right:1px solid #2a1f0a;padding:40px 32px;display:flex;flex-direction:column;gap:24px}
+.logo{text-align:center;margin-bottom:8px}
+.logo h1{font-family:'Cinzel',serif;font-size:2rem;color:#c9a84c;letter-spacing:4px;text-transform:uppercase}
+.logo p{font-size:0.8rem;color:#7a6a4a;letter-spacing:2px;margin-top:4px}
+.divider{height:1px;background:linear-gradient(to right,transparent,#c9a84c44,transparent);margin:8px 0}
+.form-group{display:flex;flex-direction:column;gap:8px}
+.form-group label{font-family:'Cinzel',serif;font-size:0.75rem;color:#c9a84c;letter-spacing:2px;text-transform:uppercase}
+.form-group input,.form-group select{background:#1a1525;border:1px solid #3a2f1a;border-radius:4px;padding:12px 14px;color:#e8d5a3;font-family:'IM Fell English',serif;font-size:1rem;transition:border-color 0.2s;width:100%}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:#c9a84c}
+.form-group input::placeholder{color:#5a4a3a}
+.form-group select option{background:#1a1525}
+.btn-generate{background:linear-gradient(135deg,#c9a84c,#a07830);border:none;border-radius:4px;padding:14px;color:#0a0a0f;font-family:'Cinzel',serif;font-size:0.9rem;font-weight:700;letter-spacing:2px;cursor:pointer;text-transform:uppercase;transition:all 0.2s;margin-top:8px}
+.btn-generate:hover{background:linear-gradient(135deg,#e0b85c,#b08840);transform:translateY(-1px)}
+.btn-download{background:transparent;border:1px solid #c9a84c;border-radius:4px;padding:12px;color:#c9a84c;font-family:'Cinzel',serif;font-size:0.85rem;letter-spacing:2px;cursor:pointer;text-transform:uppercase;transition:all 0.2s;display:none}
+.btn-download:hover{background:#c9a84c22}
+.btn-download.visible{display:block}
+.realm-gen{display:flex;gap:8px}
+.realm-gen input{flex:1}
+.btn-realm{background:#1a1525;border:1px solid #3a2f1a;border-radius:4px;padding:12px;color:#c9a84c;cursor:pointer;font-size:1rem;transition:all 0.2s;white-space:nowrap}
+.btn-realm:hover{border-color:#c9a84c}
+.preview-panel{display:flex;align-items:center;justify-content:center;padding:40px;background:#070710}
+.certificate{width:700px;min-height:500px;background:#1a1208;border:3px solid #c9a84c;position:relative;padding:50px 60px;text-align:center;box-shadow:0 0 60px #c9a84c22,inset 0 0 80px #00000088}
+.cert-border-outer{position:absolute;inset:8px;border:1px solid #c9a84c55;pointer-events:none}
+.cert-border-inner{position:absolute;inset:14px;border:1px solid #c9a84c33;pointer-events:none}
+.corner{position:absolute;width:40px;height:40px}
+.corner svg{width:40px;height:40px}
+.corner-tl{top:4px;left:4px}
+.corner-tr{top:4px;right:4px;transform:scaleX(-1)}
+.corner-bl{bottom:4px;left:4px;transform:scaleY(-1)}
+.corner-br{bottom:4px;right:4px;transform:scale(-1,-1)}
+.cert-realm-header{font-family:'Cinzel',serif;font-size:0.7rem;color:#c9a84c88;letter-spacing:4px;text-transform:uppercase;margin-bottom:16px}
+.cert-title-main{font-family:'Cinzel',serif;font-size:2.2rem;color:#c9a84c;letter-spacing:3px;text-transform:uppercase;margin-bottom:6px;text-shadow:0 0 20px #c9a84c44}
+.cert-subtitle{font-family:'Cinzel',serif;font-size:0.75rem;color:#9a7a3a;letter-spacing:6px;text-transform:uppercase;margin-bottom:30px}
+CSS
+
+
+.cert-decree{font-size:0.85rem;color:#c9a84c88;letter-spacing:2px;font-style:italic;margin-bottom:20px}
+Markup
+
+
+.cert-name{font-family:'Cinzel',serif;font-size:2.8rem;color:#e8d5a3;margin:16px 0;text-shadow:0 0 30px #c9a84c33}
+.cert-placeholder-name{font-family:'Cinzel',serif;font-size:2rem;color:#3a3020;margin:16px 0;font-style:italic}
+.cert-title-line{font-family:'Cinzel',serif;font-size:1.1rem;color:#c9a84c;letter-spacing:3px;margin:8px 0 24px;text-transform:uppercase}
+.cert-body{font-size:0.9rem;color:#b09060;line-height:1.8;max-width:500px;margin:0 auto 24px;font-style:italic}
+.cert-realm{font-family:'Cinzel',serif;font-size:1.3rem;color:#c9a84c;margin:8px 0}
+.cert-placeholder-realm{font-family:'Cinzel',serif;font-size:1.1rem;color:#3a3020;margin:8px 0;font-style:italic}
+.cert-divider{height:1px;background:linear-gradient(to right,transparent,#c9a84c66,transparent);margin:20px auto;width:80%}
+.cert-seal{margin:20px auto}
+.cert-footer{display:flex;justify-content:space-between;align-items:flex-end;margin-top:24px;font-size:0.75rem;color:#6a5a3a}
+.cert-date{font-style:italic}
+.cert-sig{font-family:'Cinzel',serif;letter-spacing:2px}
+</style>
 </head>
 <body>
-
-    <div class="certificate-form">
-        <h2>Get Your Certificate</h2>
-        <form id="certificateForm">
-            <input type="text" id="buyerName" placeholder="Enter your name" required>
-            <input type="text" id="buyerTitle" placeholder="Enter your title" required>
-            <button type="submit">Generate Certificate</button>
-        </form>
-    </div>
-
-    <script>
-        document.getElementById('certificateForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const name = document.getElementById('buyerName').value;
-            const title = document.getElementById('buyerTitle').value;
-            console.log('Name:', name);
-            console.log('Title:', title);
-            // Next: Use this data to create a PDF
-        });
-    </script>
-
+<div class="page">
+<div class="form-panel">
+<div class="logo"><h1>Substra</h1><p>The Hidden Realm</p></div>
+<div class="divider"></div>
+<p style="font-size:0.85rem;color:#7a6a4a;line-height:1.6;text-align:center;font-style:italic;">Claim your noble title in the civilisation beneath the world. Your decree awaits.</p>
+<div class="divider"></div>
+<div class="form-group"><label>Your Full Name</label><input type="text" id="nameInput" placeholder="Enter your name..." oninput="updatePreview()"></div>
+<div class="form-group"><label>Noble Title</label>
+<select id="titleSelect" onchange="updatePreview()">
+<option value="">— Choose your title —</option>
+<option value="Baron">Baron</option>
+<option value="Baroness">Baroness</option>
+<option value="Earl">Earl</option>
+<option value="Countess">Countess</option>
+<option value="Duke">Duke</option>
+<option value="Duchess">Duchess</option>
+<option value="Lord">Lord</option>
+<option value="Lady">Lady</option>
+<option value="Archon">Archon (Substra Elite)</option>
+<option value="Sovereign">Sovereign (Substra Supreme)</option>
+</select></div>
+<div class="form-group"><label>Your Realm</label>
+<div class="realm-gen"><input type="text" id="realmInput" placeholder="Name your realm..." oninput="updatePreview()"><button class="btn-realm" onclick="generateRealm()">✦ Generate</button></div></div>
+<button class="btn-generate" onclick="generateCertificate()">✦ Issue Decree ✦</button>
+<button class="btn-download" id="downloadBtn" onclick="downloadPDF()">⬇ Download Certificate</button>
+</div>
+<div class="preview-panel">
+<div class="certificate" id="certificate">
+<div class="cert-border-outer"></div>
+<div class="cert-border-inner"></div>
+<div class="corner corner-tl"><svg viewBox="0 0 40 40"><path d="M2,2 L2,20 M2,2 L20,2 M2,8 Q8,8 8,2 M8,2 L8,14 Q8,20 14,20 M2,14 L14,14 Q20,14 20,20" stroke="#c9a84c" stroke-width="1" fill="none"/></svg></div>
+<div class="corner corner-tr"><svg viewBox="0 0 40 40"><path d="M2,2 L2,20 M2,2 L20,2 M2,8 Q8,8 8,2 M8,2 L8,14 Q8,20 14,20 M2,14 L14,14 Q20,14 20,20" stroke="#c9a84c" stroke-width="1" fill="none"/></svg></div>
+<div class="corner corner-bl"><svg viewBox="0 0 40 40"><path d="M2,2 L2,20 M2,2 L20,2 M2,8 Q8,8 8,2 M8,2 L8,14 Q8,20 14,20 M2,14 L14,14 Q20,14 20,20" stroke="#c9a84c" stroke-width="1" fill="none"/></svg></div>
+Markup
+
+
+<div class="corner corner-br"><svg viewBox="0 0 40 40"><path d="M2,2 L2,20 M2,2 L20,2 M2,8 Q8,8 8,2 M8,2 L8,14 Q8,20 14,20 M2,14 L14,14 Q20,14 20,20" stroke="#c9a84c" stroke-width="1" fill="none"/></svg></div>
+<div class="cert-realm-header">The Sovereign Realm of Substra</div>
+<div class="cert-title-main">Royal Decree</div>
+<div class="cert-subtitle">By Ancient Authority &amp; Eternal Law</div>
+<div class="cert-divider"></div>
+<div class="cert-decree">Let it be known throughout the Hidden Realm that</div>
+<div id="certName" class="cert-placeholder-name">Your Name</div>
+Markup
+
+
+<div id="certTitleLine" class="cert-title-line" style="color:#3a3020;">— awaiting title —</div>
+<div class="cert-body">Is hereby granted dominion over the realm of<br>
+<span id="certRealm" class="cert-placeholder-realm">Your Realm</span><br>
+with all rights, honours, and privileges thereto belonging,<br>
+by the eternal authority of the Substra Crown.</div>
+<div class="cert-divider"></div>
+<div class="cert-seal"><svg width="80" height="80" viewBox="0 0 80 80">
+<circle cx="40" cy="40" r="36" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+<circle cx="40" cy="40" r="30" fill="#1a1208" stroke="#c9a84c55" stroke-width="1"/>
+<circle cx="40" cy="40" r="24" fill="none" stroke="#c9a84c33" stroke-width="1"/>
+<polygon points="40,14 44,26 57,26 47,34 51,46 40,38 29,46 33,34 23,26 36,26" fill="#c9a84c" opacity="0.8"/>
+<text x="40" y="58" text-anchor="middle" font-family="Cinzel" font-size="5" fill="#c9a84c88" letter-spacing="2">SUBSTRA</text>
+</svg></div>
+<div class="cert-footer">
+<div class="cert-date" id="certDate">—</div>
+<div class="cert-sig">The Substra Crown ✦</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+const RP=['Aldra','Veth','Korum','Selyn','Drath','Miral','Thex','Voryn','Caeln','Ostyr','Lumyn','Drevak','Sorath','Aelvyn','Korrath'];
+const RS=['mere','hold','spire','deep','vale','fell','mark','thorpe','heim','reach','moor','crest','shade','vault','stone'];
+function generateRealm(){
+  const r=RP[Math.floor(Math.random()*RP.length)]+RS[Math.floor(Math.random()*RS.length)];
+  document.getElementById('realmInput').value=r;updatePreview();
+}
+function updatePreview(){
+  const name=document.getElementById('nameInput').value.trim();
+  const title=document.getElementById('titleSelect').value;
+  const realm=document.getElementById('realmInput').value.trim();
+  const cn=document.getElementById('certName');
+  if(name){cn.textContent=name;cn.className='cert-name';}else{cn.textContent='Your Name';cn.className='cert-placeholder-name';}
+  const ct=document.getElementById('certTitleLine');
+  if(title){ct.textContent='— '+title+' of Substra —';ct.style.color='#c9a84c';}else{ct.textContent='— awaiting title —';ct.style.color='#3a3020';}
+  const cr=document.getElementById('certRealm');
+  if(realm){cr.textContent=realm;cr.className='cert-realm';}else{cr.textContent='Your Realm';cr.className='cert-placeholder-realm';}
+}
+function generateCertificate(){
+  const name=document.getElementById('nameInput').value.trim();
+  const title=document.getElementById('titleSelect').value;
+  const realm=document.getElementById('realmInput').value.trim();
+  if(!name||!title||!realm){alert('Please enter your name, choose a title, and name your realm.');return;}
+  const now=new Date();
+  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('certDate').textContent=now.getDate()+' '+months[now.getMonth()]+' '+now.getFullYear();
+  document.getElementById('downloadBtn').classList.add('visible');
+}
+function downloadPDF(){
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
+  const name=document.getElementById('nameInput').value.trim();
+  const title=document.getElementById('titleSelect').value;
+  const realm=document.getElementById('realmInput').value.trim();
+  const date=document.getElementById('certDate').textContent;
+  doc.setFillColor(26,18,8);doc.rect(0,0,297,210,'F');
+  doc.setDrawColor(201,168,76);doc.setLineWidth(1.5);doc.rect(8,8,281,194);
+  doc.setLineWidth(0.5);doc.rect(12,12,273,186);
+  doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(201,168,76);
+  doc.text('THE SOVEREIGN REALM OF SUBSTRA',148.5,30,{align:'center',charSpace:3});
+JavaScript
+
+
+  doc.setFontSize(28);doc.text('ROYAL DECREE',148.5,48,{align:'center',charSpace:2});
+  doc.setFontSize(7);doc.setTextColor(154,122,58);
+  doc.text('BY ANCIENT AUTHORITY & ETERNAL LAW',148.5,58,{align:'center',charSpace:4});
+Markup
+
+
+doc.setDrawColor(201,168,76);doc.setLineWidth(0.3);doc.line(60,63,237,63);
+  doc.setFont('helvetica','italic');doc.setFontSize(10);doc.setTextColor(201,168,76);
+  doc.text('Let it be known throughout the Hidden Realm that',148.5,75,{align:'center'});
+  doc.setFont('helvetica','bold');doc.setFontSize(26);doc.setTextColor(232,213,163);
+  doc.text(name,148.5,92,{align:'center'});
+  doc.setFontSize(12);doc.setTextColor(201,168,76);
+  doc.text('— '+title+' of Substra —',148.5,102,{align:'center',charSpace:2});
+  doc.setFont('helvetica','italic');doc.setFontSize(9);doc.setTextColor(176,144,96);
+  doc.text('Is hereby granted dominion over the realm of',148.5,116,{align:'center'});
+  doc.setFont('helvetica','bold');doc.setFontSize(16);doc.setTextColor(201,168,76);
+  doc.text(realm,148.5,128,{align:'center'});
+  doc.setFont('helvetica','italic');doc.setFontSize(9);doc.setTextColor(176,144,96);
+  doc.text('with all rights, honours, and privileges thereto belonging,',148.5,138,{align:'center'});
+  doc.text('by the eternal authority of the Substra Crown.',148.5,145,{align:'center'});
+  doc.line(60,152,237,152);
+  doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(106,90,58);
+  doc.text(date,30,185);doc.text('The Substra Crown',267,185,{align:'right'});
+  doc.save('substra-'+name.replace(/\s+/g,'-').toLowerCase()+'.pdf');
+}
+</script>
 </body>
 </html>
