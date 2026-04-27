@@ -127,11 +127,14 @@ function updatePreview(){
   const title=document.getElementById('titleSelect').value;
   const realm=document.getElementById('realmInput').value.trim();
   const cn=document.getElementById('certName');
-  if(name){cn.textContent=name;cn.className='cert-name';}else{cn.textContent='Your Name';cn.className='cert-placeholder-name';}
+  if(name){cn.textContent=name;cn.className='cert-name';}
+  else{cn.textContent='Your Name';cn.className='cert-placeholder-name';}
   const ct=document.getElementById('certTitleLine');
-  if(title){ct.textContent='— '+title+' of Substra —';ct.style.color='#ffd700 a84c';}else{ct.textContent='— awaiting title —';ct.style.color='#3a3020';}
+  if(title){ct.textContent='— '+title+' of Substra —';ct.style.color='#ffd700';ct.style.opacity='1';}
+  else{ct.textContent='awaiting title';ct.style.color='#3a3020';ct.style.opacity='0.4';}
   const cr=document.getElementById('certRealm');
-  if(realm){cr.textContent=realm;cr.className='cert-realm';}else{cr.textContent='Your Realm';cr.className='cert-placeholder-realm';}
+  if(realm){cr.textContent=realm;cr.className='cert-realm';}
+  else{cr.textContent='Your Realm';cr.className='cert-placeholder-realm';}
 }
 function generateCertificate(){
   const name=document.getElementById('nameInput').value.trim();
