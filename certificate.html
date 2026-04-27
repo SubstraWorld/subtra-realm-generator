@@ -155,29 +155,6 @@ function generateCertificate(){
 function downloadPDF(){
   window.print();
 }
-JavaScript
-  doc.setFontSize(28);doc.text('ROYAL DECREE',148.5,48,{align:'center',charSpace:2});
-  doc.setFontSize(7);doc.setTextColor(154,122,58);
-  doc.text('BY ANCIENT AUTHORITY & ETERNAL LAW',148.5,58,{align:'center',charSpace:4});
-doc.setDrawColor(201,168,76);doc.setLineWidth(0.3);doc.line(60,63,237,63);
-  doc.setFont('helvetica','italic');doc.setFontSize(10);doc.setTextColor(201,168,76);
-  doc.text('Let it be known throughout the Hidden Realm that',148.5,75,{align:'center'});
-  doc.setFont('helvetica','bold');doc.setFontSize(26);doc.setTextColor(232,213,163);
-  doc.text(name,148.5,92,{align:'center'});
-  doc.setFontSize(12);doc.setTextColor(201,168,76);
-  doc.text('— '+title+' of Substra —',148.5,102,{align:'center',charSpace:2});
-  doc.setFont('helvetica','italic');doc.setFontSize(9);doc.setTextColor(176,144,96);
-  doc.text('Is hereby granted dominion over the realm of',148.5,116,{align:'center'});
-  doc.setFont('helvetica','bold');doc.setFontSize(16);doc.setTextColor(201,168,76);
-  doc.text(realm,148.5,128,{align:'center'});
-  doc.setFont('helvetica','italic');doc.setFontSize(9);doc.setTextColor(176,144,96);
-  doc.text('with all rights, honours, and privileges thereto belonging,',148.5,138,{align:'center'});
-  doc.text('by the eternal authority of the Substra Crown.',148.5,145,{align:'center'});
-  doc.line(60,152,237,152);
-  doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(106,90,58);
-  doc.text(date,30,185);doc.text('The Substra Crown',267,185,{align:'right'});
-  doc.save('substra-'+name.replace(/\s+/g,'-').toLowerCase()+'.pdf');
-}
 </script>
 </body>
 </html>
