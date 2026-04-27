@@ -147,17 +147,8 @@ function generateCertificate(){
   document.getElementById('downloadBtn').classList.add('visible');
 }
 function downloadPDF(){
-  const {jsPDF}=window.jspdf;
-  const doc=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
-  const name=document.getElementById('nameInput').value.trim();
-  const title=document.getElementById('titleSelect').value;
-  const realm=document.getElementById('realmInput').value.trim();
-  const date=document.getElementById('certDate').textContent;
-  doc.setFillColor(26,18,8);doc.rect(0,0,297,210,'F');
-  doc.setDrawColor(201,168,76);doc.setLineWidth(1.5);doc.rect(8,8,281,194);
-  doc.setLineWidth(0.5);doc.rect(12,12,273,186);
-  doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(201,168,76);
-  doc.text('THE SOVEREIGN REALM OF SUBSTRA',148.5,30,{align:'center',charSpace:3});
+  window.print();
+}
 JavaScript
   doc.setFontSize(28);doc.text('ROYAL DECREE',148.5,48,{align:'center',charSpace:2});
   doc.setFontSize(7);doc.setTextColor(154,122,58);
