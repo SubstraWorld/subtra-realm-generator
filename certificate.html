@@ -56,11 +56,13 @@ CSS
 .cert-footer{display:flex;justify-content:space-between;align-items:flex-end;margin-top:24px;font-size:0.75rem;color:#6a5a3a}
 .cert-date{font-style:italic}
 .cert-sig{font-family:'Cinzel',serif;letter-spacing:2px}
-  @media print {
-  .form-panel { display: none; }
-  .preview-panel { padding: 0; background: white; }
-  .certificate { box-shadow: none; margin: 0 auto; }
-  body { background: white; }
+@media print {
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  body { background: #1a1208 !important; margin: 0; }
+  .form-panel { display: none !important; }
+  .page { display: block; }
+  .preview-panel { display: flex; align-items: center; justify-content: center; padding: 20px; background: #1a1208 !important; min-height: 100vh; }
+  .certificate { width: 90%; max-width: 700px; background: #1a1208 !important; }
 }
 </style>
 </head>
